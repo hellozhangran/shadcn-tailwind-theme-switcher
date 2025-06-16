@@ -15,7 +15,7 @@ const themes = [
 ];
 
 export function ColorThemeToggle() {
-  const { colorTheme, setColorTheme } = useTheme();
+  const { setColorTheme } = useTheme();
 
   return (
     <DropdownMenu>
