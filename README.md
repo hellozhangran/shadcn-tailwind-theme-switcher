@@ -2,6 +2,12 @@
 *基于shadcn、tailwind的主题切换方案*
 
 
+## 使用
+- `pnpm install` 安装依赖
+- `pnpm dev` 启动服务
+- 点击控制台链接打开页面
+
+
 ## 开发记录
 - 项目初始化使用vite
   - `pnpm create vite .`
