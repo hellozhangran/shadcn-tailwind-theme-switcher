@@ -1,0 +1,15 @@
+@import "tailwindcss";
+
+@config "../tailwind.config.ts";
+
+@utility menu {
+  @apply p-2 text-yellow-500 font-semibold;
+}
+
+div.color {
+  color: theme('colors.green.100');
+}
+
+div.red {
+  color: theme('colors.red.100');
+}

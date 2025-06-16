@@ -1,1 +1,3 @@
 - `pnpm create vite .`
+- `pnpm i tailwindcss @tailwindcss/vite`
+- 
