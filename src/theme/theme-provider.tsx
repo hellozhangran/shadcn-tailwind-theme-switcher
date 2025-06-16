@@ -1,40 +1,51 @@
 import { createContext, useContext, useEffect, useState } from "react"
 
-type Theme = "dark" | "light" | "system"
+export type Theme = "dark" | "light" | "system"
 
 type ThemeProviderProps = {
   children: React.ReactNode
   defaultTheme?: Theme
-  storageKey?: string
+  defaultColorTheme?: ColorTheme | ""
 }
+
+export type ColorTheme = "rose" | "green" | "violet"
 
 type ThemeProviderState = {
   theme: Theme
   setTheme: (theme: Theme) => void
+  colorTheme: ColorTheme
+  setColorTheme: (colorTheme: ColorTheme) => void
 }
 
 const initialState: ThemeProviderState = {
   theme: "system",
   setTheme: () => null,
+  colorTheme: "rose",
+  setColorTheme: () => null,
 }
 
 const ThemeProviderContext = createContext<ThemeProviderState>(initialState)
 
+const themeKey = "vite-ui-theme"
+const colorThemeKey = "vite-ui-color-theme"
+
 export function ThemeProvider({
   children,
   defaultTheme = "system",
-  storageKey = "vite-ui-theme",
+  defaultColorTheme = "",
   ...props
 }: ThemeProviderProps) {
   const [theme, setTheme] = useState<Theme>(
-    () => (localStorage.getItem(storageKey) as Theme) || defaultTheme
+    () => (localStorage.getItem(themeKey) as Theme) || defaultTheme
+  )
+
+  const [colorTheme, setColorTheme] = useState<ColorTheme>(
+    () => (localStorage.getItem(colorThemeKey) as ColorTheme) || defaultColorTheme
   )
 
   useEffect(() => {
     const root = window.document.documentElement
-
     root.classList.remove("light", "dark")
-
     if (theme === "system") {
       const systemTheme = window.matchMedia("(prefers-color-scheme: dark)")
         .matches
@@ -48,11 +59,26 @@ export function ThemeProvider({
     root.classList.add(theme)
   }, [theme])
 
+  useEffect(() => {
+    const root = window.document.documentElement;
+    // Apply color theme
+    if (colorTheme) {
+      root.setAttribute("data-theme", colorTheme);
+    } else {
+      root.removeAttribute("data-theme");
+    }
+  }, [colorTheme]);
+
   const value = {
     theme,
     setTheme: (theme: Theme) => {
-      localStorage.setItem(storageKey, theme)
+      localStorage.setItem(themeKey, theme)
       setTheme(theme)
+    },
+    colorTheme,
+    setColorTheme: (colorTheme: ColorTheme) => {
+      localStorage.setItem(colorThemeKey, colorTheme)
+      setColorTheme(colorTheme)
     },
   }
 
